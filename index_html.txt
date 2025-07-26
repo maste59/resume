@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Full Styled Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background: #2e2e2e;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 15px;
+    }
+
+    #display {
+      height: 60px;
+      font-size: 26px;
+      text-align: right;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 70px);
+      grid-gap: 10px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #d6d6d6;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #bbb;
+    }
+
+    .operator { background-color: #3399ff; color: white; }
+    .equals   { background-color: #28a745; color: white; }
+    .clear    { background-color: #dc3545; color: white; }
+    .func     { background-color: #bcbcbc; }
+  </style>
+</head>
+<body>
+<div class="calculator">
+  <input type="text" id="display" disabled>
+  <div class="buttons">
+    <button onclick="append('%')" class="func">%</button>
+    <button onclick="clearEntry()" class="func">CE</button>
+    <button onclick="clearDisplay()" class="clear">C</button>
+    <button onclick="backspace()" class="func">⌫</button>
+
+    <button onclick="append('1/')" class="func">1/x</button>
+    <button onclick="append('**2')" class="func">x²</button>
+    <button onclick="append('Math.sqrt(')" class="func">√</button>
+    <button onclick="append('/')" class="operator">÷</button>
+
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button>
+    <button onclick="append('*')" class="operator">×</button>
+
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button>
+    <button onclick="append('-')" class="operator">−</button>
+
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button onclick="append('+')" class="operator">+</button>
+
+    <button onclick="toggleSign()">+/-</button>
+    <button onclick="append('0')">0</button>
+    <button onclick="append('.')">.</button>
+    <button onclick="calculate()" class="equals">=</button>
+  </div>
+</div>
+
+<script>
+  function append(value) {
+    const display = document.getElementById("display");
+    if (value === 'Math.sqrt(') {
+      display.value += 'Math.sqrt('; // auto close will be handled later
+    } else {
+      display.value += value;
+    }
+  }
+
+  function clearDisplay() {
+    document.getElementById("display").value = '';
+  }
+
+  function clearEntry() {
+    const display = document.getElementById("display");
+    display.value = display.value.replace(/[^\+\-\*\/]*$/, '');
+  }
+
+  function backspace() {
+    const display = document.getElementById("display");
+    display.value = display.value.slice(0, -1);
+  }
+
+  function toggleSign() {
+    const display = document.getElementById("display");
+    if (display.value.startsWith("-")) {
+      display.value = display.value.substring(1);
+    } else {
+      display.value = "-" + display.value;
+    }
+  }
+
+  function calculate() {
+    try {
+      const result = eval(document.getElementById("display").value);
+      document.getElementById("display").value = result;
+    } catch (e) {
+      document.getElementById("display").value = 'Error';
+    }
+  }
+</script>
+</body>
+</html>
